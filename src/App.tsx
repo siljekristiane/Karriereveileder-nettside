@@ -1,7 +1,10 @@
+import { Signpost } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { CareerGuide } from './components/CareerGuide';
 import { CheckRound } from './components/CheckRound';
 import { Crossroad } from './components/Crossroad';
 import { Destinations } from './components/Destinations';
+import { Landing } from './components/Landing';
 import { RouteMap } from './components/RouteMap';
 import { FIELDS, QUESTION_BY_ID } from './data/questions';
 import { applyChecks, type Detour } from './logic/check';
@@ -19,6 +22,9 @@ export function App() {
   const [revisit, setRevisit] = useState<string | undefined>(undefined);
   const [checking, setChecking] = useState(false);
   const [outcome, setOutcome] = useState<CheckOutcome | undefined>(undefined);
+  const [started, setStarted] = useState(false);
+  // The career whose "Veien videre" page is open.
+  const [openId, setOpenId] = useState<string | undefined>(undefined);
 
   useEffect(() => saveAnswers(answers), [answers]);
 
@@ -26,6 +32,11 @@ export function App() {
   const current = checking ? undefined : (revisit && QUESTION_BY_ID.get(revisit)) || nextQuestion(answers);
   const answeredCount = Object.keys(activeAnswers(answers)).length;
   const ranked = useMemo(() => rankCareers(answers), [answers]);
+  const opened = ranked.find((m) => m.career.id === openId);
+
+  // Each new view starts at the top of the page.
+  const view = !started ? 'landing' : checking ? 'check' : current ? current.id : opened ? opened.career.id : 'results';
+  useEffect(() => window.scrollTo(0, 0), [view]);
 
   const choose = (optionId: string) => {
     if (!current) return;
@@ -40,6 +51,9 @@ export function App() {
     setAnswers({});
     setRevisit(undefined);
     setOutcome(undefined);
+    setOpenId(undefined);
+    setChecking(false);
+    setStarted(true);
   };
 
   const finishChecks = (checkAnswers: Record<string, string>) => {
@@ -64,16 +78,12 @@ export function App() {
 
   let stage;
   if (checking) {
-    stage = <CheckRound onDone={finishChecks} onReopenDirection={reopenDirection} onCancel={() => setChecking(false)} />;
+    stage = (
+      <CheckRound onDone={finishChecks} onReopenDirection={reopenDirection} onCancel={() => setChecking(false)} />
+    );
   } else if (current) {
     stage = (
       <>
-        {answeredCount === 0 && (
-          <p className="intro">
-            Hvilken jobb passer deg? Start med fagfeltet som frister mest, velg en konkret retning, og gå så resten av
-            veien ett veiskille om gangen. Til slutt ser du hvilke yrker som passer veien din.
-          </p>
-        )}
         <Crossroad
           key={current.id}
           question={current}
@@ -85,11 +95,15 @@ export function App() {
         />
       </>
     );
+  } else if (opened) {
+    stage = <CareerGuide key={opened.career.id} match={opened} answers={answers} onBack={() => setOpenId(undefined)} />;
   } else {
     stage = (
       <section className="arrival" aria-labelledby="arrival-title">
         <p className="eyebrow">Fremme</p>
-        <h1 id="arrival-title" className="crossroad__title">Yrkene som passer veien din</h1>
+        <h1 id="arrival-title" className="crossroad__title">
+          Yrkene som passer veien din
+        </h1>
         {outcome && (
           <div className="detours" role="status">
             {outcome.detours.length > 0 ? (
@@ -99,7 +113,8 @@ export function App() {
                   {outcome.detours.map((d) => (
                     <li key={d.question}>
                       <span className="detours__step">{QUESTION_BY_ID.get(d.question)?.waypoint}</span>{' '}
-                      {d.before && <s>{optionLabel(d.question, d.before)}</s>} → <strong>{optionLabel(d.question, d.after)}</strong>
+                      {d.before && <s>{optionLabel(d.question, d.before)}</s>} →{' '}
+                      <strong>{optionLabel(d.question, d.after)}</strong>
                     </li>
                   ))}
                 </ul>
@@ -109,16 +124,17 @@ export function App() {
               </>
             ) : (
               <p>
-                Kontrollspørsmålene stemte med valgene dine. Prøv «Riktig felt, feil retning», eller trykk på et punkt på
-                kartet og velg en annen vei.
+                Kontrollspørsmålene stemte med valgene dine. Prøv «Riktig felt, feil retning», eller trykk på et punkt
+                på kartet og velg en annen vei.
               </p>
             )}
           </div>
         )}
         <p className="muted">
-          Prosenten viser hvor mange av valgene dine yrket passer med. Trykk på et punkt på kartet for å prøve en annen vei.
+          Prosenten viser hvor mange av valgene dine yrket passer med. Trykk på et yrke for roller, råd om veien dit,
+          folk å snakke med og et forslag til LinkedIn-innlegg.
         </p>
-        <Destinations matches={ranked.slice(0, RESULT_COUNT)} />
+        <Destinations matches={ranked.slice(0, RESULT_COUNT)} onOpen={(m) => setOpenId(m.career.id)} />
         <div className="actions">
           <button type="button" className="button" onClick={() => setChecking(true)}>
             Forslagene passer ikke
@@ -134,31 +150,48 @@ export function App() {
   return (
     <div className="page">
       <header className="masthead">
-        <a className="brand" href="./">
-          <span className="brand__mark" aria-hidden="true">T</span>
+        <button
+          type="button"
+          className="brand"
+          onClick={() => {
+            setStarted(false);
+            setOpenId(undefined);
+            setChecking(false);
+          }}
+        >
+          <span className="brand__mark" aria-hidden="true">
+            <Signpost size={18} />
+          </span>
           Veikartet
-        </a>
+        </button>
         <p className="masthead__note">Gratis karriereveileder · ingen innlogging</p>
       </header>
 
-      <div className="layout">
-        <RouteMap
-          route={route}
-          answers={answers}
-          currentId={current?.id}
-          onSelect={(id) => {
-            setChecking(false);
-            setRevisit(id);
-          }}
-        />
-        <main className="stage">{stage}</main>
-      </div>
+      {!started ? (
+        <Landing hasProgress={answeredCount > 0} onStart={() => setStarted(true)} onRestart={restart} />
+      ) : (
+        <div className="layout">
+          <RouteMap
+            route={route}
+            answers={answers}
+            currentId={current?.id}
+            onSelect={(id) => {
+              setChecking(false);
+              setOpenId(undefined);
+              setRevisit(id);
+            }}
+          />
+          <main className="stage">{stage}</main>
+        </div>
+      )}
 
       <footer className="footer">
         <p>
           Veikartet gir forslag, ikke fasit. Les mer om yrkene og utdanningene på{' '}
-          <a href="https://utdanning.no" target="_blank" rel="noreferrer">utdanning.no</a>, og snakk gjerne med en
-          karriereveileder.
+          <a href="https://utdanning.no" target="_blank" rel="noreferrer">
+            utdanning.no
+          </a>
+          , og snakk gjerne med en karriereveileder.
         </p>
       </footer>
     </div>

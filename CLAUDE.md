@@ -20,6 +20,12 @@ npm run check   # lint + typecheck + test + build (skal være grønt før push)
 - `src/data/checks.ts` + `src/logic/check.ts`: «Finn avviket» etter resultatet.
   Brukeren sier hva som var feil, får konkrete kontrollspørsmål om de samme
   veiskillene, og der svaret spriker, byttes svaret (kan angres).
+- `src/data/guides.ts` + `src/logic/guidance.ts`: «Veien videre» per yrke (åpnes fra
+  resultatet): konkrete roller, egne rollekombinasjoner, veien dit etter utdanning,
+  skille seg ut, studielenker, hvem man bør kontakte (etter stilling) med meldingsmal,
+  bedrifter og forslag til LinkedIn-innlegg. Ingenting sendes til LinkedIn: bare søk,
+  tekst å kopiere og en knapp til LinkedIn. Ingen sjekklister (brukerens ønske).
+- `src/components/Landing.tsx`: forsiden; `icons.tsx`: ikonene i kartet (lucide-react).
 - `src/data/careers.ts`: yrker med `fits` (spørsmål → valg som passer). Et spørsmål
   yrket ikke nevner, regnes som ikke-treff.
 - `src/logic/route.ts` (ren, testet): ruten, neste veiskille, rangering.

@@ -228,12 +228,12 @@ export const QUESTIONS: Question[] = [
   {
     id: 'utdanning',
     waypoint: 'Utdanning',
-    text: 'Hvor lang utdanning er du klar for?',
+    text: 'Har du utdanning, eller vil du studere?',
     weight: 2,
     options: [
-      { id: 'kort', label: 'Fagbrev eller kort', hint: 'Videregående med læretid, ca. 4 år' },
-      { id: 'bachelor', label: 'Bachelor', hint: 'Ca. 3 år på høyskole eller universitet' },
-      { id: 'master', label: 'Master eller mer', hint: '5 år eller lenger' },
+      { id: 'kort', label: 'Fagbrev eller kort', hint: 'Har eller vil ta videregående med læretid, ca. 4 år' },
+      { id: 'bachelor', label: 'Bachelor', hint: 'Har eller vil ta ca. 3 år på høyskole eller universitet' },
+      { id: 'master', label: 'Master eller mer', hint: 'Har eller vil ta 5 år eller lenger' },
       { id: 'vetikke', label: 'Vet ikke ennå', hint: 'Vis meg alle veier', neutral: true },
     ],
   },

@@ -17,10 +17,12 @@ export function CheckRound({ onDone, onReopenDirection, onCancel }: Props) {
     return (
       <section className="crossroad" aria-labelledby="check-title">
         <p className="eyebrow">Finn avviket</p>
-        <h1 id="check-title" className="crossroad__title">Hva stemte ikke med forslagene?</h1>
+        <h1 id="check-title" className="crossroad__title">
+          Hva stemte ikke med forslagene?
+        </h1>
         <p className="muted">
-          Valgene du har gjort, beholdes. Du får noen nye spørsmål om de samme tingene, stilt på en annen måte, så ser vi
-          hvor veien tok av.
+          Valgene du har gjort, beholdes. Du får noen nye spørsmål om de samme tingene, stilt på en annen måte, så ser
+          vi hvor veien tok av.
         </p>
         <div className="paths">
           {COMPLAINTS.map((c) => (
@@ -59,7 +61,9 @@ export function CheckRound({ onDone, onReopenDirection, onCancel }: Props) {
         Kontrollspørsmål {step + 1} av {complaint.checks.length}
         <span className="tag tag--blue">{complaint.label}</span>
       </p>
-      <h1 id="check-title" className="crossroad__title">{check.text}</h1>
+      <h1 id="check-title" className="crossroad__title">
+        {check.text}
+      </h1>
       <div className="paths">
         {check.options.map((o) => (
           <button

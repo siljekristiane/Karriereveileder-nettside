@@ -1,4 +1,5 @@
 import { optionLabel, type Answers } from '../logic/route';
+import { questionIcon } from './icons';
 import type { Question } from '../data/questions';
 
 type Props = {
@@ -8,8 +9,8 @@ type Props = {
   onSelect: (questionId: string) => void;
 };
 
-// The walked route as a winding trail. Each fork is a cairn with the T that
-// marks hiking trails in Norway; the trail ahead is dotted until it is walked.
+// The walked route as a winding trail. Each fork is a waypoint with an icon for
+// what it asks about; the trail ahead is dotted until it is walked.
 const STEP = 84;
 const TOP = 34;
 
@@ -42,7 +43,9 @@ export function RouteMap({ route, answers, currentId, onSelect }: Props) {
     <nav className="map" aria-label="Veikartet ditt">
       <div className="map__canvas" style={{ height }}>
         <svg className="map__trail" viewBox={`0 0 100 ${height}`} preserveAspectRatio="none" aria-hidden="true">
-          {route.length > 1 && <path d={path(0, route.length - 1)} className="map__ahead" vectorEffect="non-scaling-stroke" />}
+          {route.length > 1 && (
+            <path d={path(0, route.length - 1)} className="map__ahead" vectorEffect="non-scaling-stroke" />
+          )}
           {lastWalked > 0 && <path d={path(0, lastWalked)} className="map__walked" vectorEffect="non-scaling-stroke" />}
         </svg>
         <ol className="map__stops">
@@ -51,11 +54,16 @@ export function RouteMap({ route, answers, currentId, onSelect }: Props) {
             const isCurrent = q.id === currentId;
             const state = isCurrent ? 'current' : answer !== undefined ? 'done' : 'ahead';
             const p = points[i]!;
+            const Icon = questionIcon(q.id);
             return (
               <li
                 key={q.id}
                 className={`stop stop--${state}`}
-                style={{ top: p.y, left: `${p.x}%`, maxWidth: `calc(${100 - p.x}% + 18px)` }}
+                style={{
+                  top: p.y,
+                  left: `${p.x}%`,
+                  maxWidth: `calc(${100 - p.x}% + 18px)`,
+                }}
               >
                 <button
                   type="button"
@@ -65,11 +73,12 @@ export function RouteMap({ route, answers, currentId, onSelect }: Props) {
                   aria-current={isCurrent ? 'step' : undefined}
                   aria-label={`${q.waypoint}${answer ? `: ${optionLabel(q.id, answer)}` : ''}${state === 'done' ? '. Gå tilbake hit' : ''}`}
                 >
-                  <span className="stop__marker" aria-hidden="true">T</span>
+                  <span className="stop__marker" aria-hidden="true">
+                    <Icon size={18} strokeWidth={2} />
+                  </span>
                   <span className="stop__text">
                     <span className="stop__name">{q.waypoint}</span>
                     {answer !== undefined && <span className="stop__answer">{optionLabel(q.id, answer)}</span>}
-                    
                   </span>
                 </button>
               </li>
