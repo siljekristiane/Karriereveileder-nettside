@@ -1,4 +1,10 @@
-import type { Question } from '../data/questions';
+import { FIELDS, type Question } from '../data/questions';
+
+/** The field whose colour an option carries, if any. */
+export function fieldTint(questionId: string, optionId: string): string | undefined {
+  if (questionId === 'felt') return FIELDS.some((f) => f.id === optionId) ? optionId : undefined;
+  return FIELDS.some((f) => f.id === questionId) ? questionId : undefined;
+}
 
 type Props = {
   question: Question;
@@ -14,7 +20,7 @@ export function Crossroad({ question, step, total, chosen, onChoose, onBack }: P
     <section className="crossroad" aria-labelledby="crossroad-title">
       <p className="eyebrow">
         Veiskille {step} av {total}
-        {question.showIf && <span className="tag">Sidevei</span>}
+        {question.showIf && <span className="tag">Konkret retning</span>}
       </p>
       <h1 id="crossroad-title" className="crossroad__title">{question.text}</h1>
       <div className="paths">
@@ -23,6 +29,7 @@ export function Crossroad({ question, step, total, chosen, onChoose, onBack }: P
             key={o.id}
             type="button"
             className={`path${o.neutral ? ' path--neutral' : ''}${chosen === o.id ? ' path--chosen' : ''}`}
+            data-tint={fieldTint(question.id, o.id)}
             onClick={() => onChoose(o.id)}
             aria-pressed={chosen === o.id}
           >

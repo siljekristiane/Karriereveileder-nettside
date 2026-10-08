@@ -8,7 +8,7 @@ type Props = {
   onSelect: (questionId: string) => void;
 };
 
-// The walked route as a winding trail. Each fork is a cairn with the red T that
+// The walked route as a winding trail. Each fork is a cairn with the T that
 // marks hiking trails in Norway; the trail ahead is dotted until it is walked.
 const STEP = 84;
 const TOP = 34;
@@ -69,7 +69,7 @@ export function RouteMap({ route, answers, currentId, onSelect }: Props) {
                   <span className="stop__text">
                     <span className="stop__name">{q.waypoint}</span>
                     {answer !== undefined && <span className="stop__answer">{optionLabel(q.id, answer)}</span>}
-                    {q.showIf && <span className="stop__branch">sidevei</span>}
+                    
                   </span>
                 </button>
               </li>

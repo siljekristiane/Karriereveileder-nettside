@@ -1,10 +1,11 @@
 # Veikartet – gratis karriereveileder
 
-En gratis karriereveileder på nett. Du går et veikart ett veiskille om gangen
-(team eller alene? stor eller liten bedrift? inne eller ute? …), og underveis
-ser du hvilke yrker du nærmer deg. Noen valg åpner en sidevei med mer
-presise spørsmål. Du kan når som helst trykke på et punkt på kartet og velge
-en annen vei.
+En gratis karriereveileder på nett. Du velger først et fagfelt og en konkret
+retning i det, og går så resten av veikartet ett veiskille om gangen (team
+eller alene? stor eller liten bedrift? inne eller ute? …). Underveis ser du
+hvilke yrker du nærmer deg, og du kan når som helst trykke på et punkt på
+kartet og velge en annen vei. Passer ikke forslagene, finner «Finn avviket»
+ut hvor veien tok av, med nye kontrollspørsmål, uten at du mister valgene dine.
 
 Ingen innlogging, ingen server: alt kjører i nettleseren, og svarene lagres
 bare lokalt hos brukeren.

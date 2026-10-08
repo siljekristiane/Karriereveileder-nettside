@@ -39,7 +39,7 @@ export function Destinations({ matches, variant }: Props) {
   return (
     <ol className="results">
       {matches.map((m, i) => (
-        <li key={m.career.id} className={`result${i === 0 ? ' result--top' : ''}`}>
+        <li key={m.career.id} className={`result${i === 0 ? ' result--top' : ''}`} data-tint={m.career.fits.felt?.[0]}>
           <div className="result__head">
             <h3 className="result__name">{m.career.name}</h3>
             <span className="result__score">{percent(m.score)}</span>

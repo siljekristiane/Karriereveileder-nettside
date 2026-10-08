@@ -1,16 +1,32 @@
 /* Layout: a hiking map. The walked route runs down the left like a trail on a
    topographic sheet; the current crossroad and the nearest destinations sit
-   beside it. Red T = the trail marks painted on stones along Norwegian paths. */
+   beside it. The T is the trail mark painted on stones along Norwegian paths.
+   Colours: Pantone 13-0442 TCX (Green Glow) and 1810 burgundy, approximated in
+   sRGB, plus one light tint per field so each part of the map has its own colour. */
 :root {
-  --bg: #edf2ef;
-  --surface: #f9fbfa;
-  --ink: #15302b;
-  --muted: #4c615b;
-  --line: #c6d4ce;
-  --soft: #dbe7e1;
-  --marker: #cf3324;
+  --green: #b0c965; /* 13-0442 TCX Green Glow */
+  --burgundy: #7c2a2e; /* PMS 1810 burgundy */
+  --on-color: #2a1719;
+
+  --bg: #fbfbf4;
+  --surface: #ffffff;
+  --ink: #2a1719;
+  --muted: #6b5557;
+  --line: #e0dccb;
+  --soft: #eef3d8;
+  --marker: #7c2a2e;
   --marker-ink: #ffffff;
-  --contour: rgb(21 48 43 / 0.06);
+  --contour: rgb(124 42 46 / 0.05);
+  --helse: #f7dfe2;
+  --oppvekst: #f8eebc;
+  --bygg: #f8dcc8;
+  --natur: #e3eec2;
+  --kreativ: #e7def4;
+  --service: #d8eaf1;
+  --okonomi: #d4eedf;
+  --it: #dde3f6;
+  --samfunn: #ece6dc;
+  --forskning: #d6efe9;
 
   --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
@@ -27,29 +43,49 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0e1b19;
-    --surface: #152624;
-    --ink: #e3eeea;
-    --muted: #9db2ab;
-    --line: #2b403b;
-    --soft: #1d332f;
-    --marker: #ef5a47;
-    --marker-ink: #160806;
-    --contour: rgb(227 238 234 / 0.05);
+    --bg: #1c1213;
+    --surface: #271a1c;
+    --ink: #f4ece9;
+    --muted: #c4b0ae;
+    --line: #47343a;
+    --soft: #2f3520;
+    --marker: #e0959a;
+    --marker-ink: #1c1213;
+    --contour: rgb(244 236 233 / 0.04);
+    --helse: #3a2328;
+    --oppvekst: #38331d;
+    --bygg: #3b2a1f;
+    --natur: #2d3519;
+    --kreativ: #2f2840;
+    --service: #1d2f36;
+    --okonomi: #1d3327;
+    --it: #232a3d;
+    --samfunn: #33302a;
+    --forskning: #1b3330;
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0e1b19;
-  --surface: #152624;
-  --ink: #e3eeea;
-  --muted: #9db2ab;
-  --line: #2b403b;
-  --soft: #1d332f;
-  --marker: #ef5a47;
-  --marker-ink: #160806;
-  --contour: rgb(227 238 234 / 0.05);
+  --bg: #1c1213;
+  --surface: #271a1c;
+  --ink: #f4ece9;
+  --muted: #c4b0ae;
+  --line: #47343a;
+  --soft: #2f3520;
+  --marker: #e0959a;
+  --marker-ink: #1c1213;
+  --contour: rgb(244 236 233 / 0.04);
+  --helse: #3a2328;
+  --oppvekst: #38331d;
+  --bygg: #3b2a1f;
+  --natur: #2d3519;
+  --kreativ: #2f2840;
+  --service: #1d2f36;
+  --okonomi: #1d3327;
+  --it: #232a3d;
+  --samfunn: #33302a;
+  --forskning: #1b3330;
   color-scheme: dark;
 }
 
@@ -138,8 +174,8 @@ button {
   width: 32px;
   height: 32px;
   border-radius: 7px;
-  background: var(--ink);
-  color: var(--marker);
+  background: var(--burgundy);
+  color: var(--green);
   font-weight: 800;
 }
 
@@ -186,7 +222,7 @@ button {
 
 .map__walked {
   fill: none;
-  stroke: var(--ink);
+  stroke: var(--marker);
   stroke-width: 3;
   stroke-linecap: round;
 }
@@ -233,9 +269,9 @@ button {
 }
 
 .stop--done .stop__marker {
-  border-color: var(--ink);
-  background: var(--surface);
-  color: var(--marker);
+  border-color: var(--marker);
+  background: var(--green);
+  color: var(--burgundy);
 }
 
 .stop--current .stop__marker {
@@ -273,13 +309,6 @@ button {
   font-size: var(--step--1);
 }
 
-.stop__branch {
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--marker);
-}
-
 /* Stage */
 .stage {
   display: grid;
@@ -291,13 +320,17 @@ button {
 
 .intro {
   grid-column: 1 / -1;
-  max-width: 62ch;
+  padding: 18px 22px;
+  border-radius: var(--radius);
+  background: var(--green);
+  color: var(--on-color);
   font-size: var(--step-1);
   line-height: 1.5;
 }
 
 .eyebrow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   font-size: var(--step--1);
@@ -309,11 +342,17 @@ button {
 }
 
 .tag {
+  white-space: nowrap;
   padding: 1px 8px;
   border-radius: 999px;
   background: var(--marker);
   color: var(--marker-ink);
   letter-spacing: 0.04em;
+}
+
+.tag--green {
+  background: var(--green);
+  color: var(--on-color);
 }
 
 .crossroad,
@@ -354,13 +393,35 @@ button {
 }
 
 .path:hover {
-  border-color: var(--ink);
+  border-color: var(--marker);
   transform: translateY(-2px);
 }
 
 .path--chosen {
   border-color: var(--marker);
+  box-shadow: inset 0 0 0 1px var(--marker);
 }
+
+/* Each field keeps its own light colour, on the cards and in the results. */
+.path[data-tint],
+.result[data-tint] {
+  background: var(--tint);
+}
+
+.path[data-tint]:not(.path--chosen):not(:hover) {
+  border-color: color-mix(in srgb, var(--tint), var(--ink) 14%);
+}
+
+[data-tint='helse'] { --tint: var(--helse); }
+[data-tint='oppvekst'] { --tint: var(--oppvekst); }
+[data-tint='bygg'] { --tint: var(--bygg); }
+[data-tint='natur'] { --tint: var(--natur); }
+[data-tint='kreativ'] { --tint: var(--kreativ); }
+[data-tint='service'] { --tint: var(--service); }
+[data-tint='okonomi'] { --tint: var(--okonomi); }
+[data-tint='it'] { --tint: var(--it); }
+[data-tint='samfunn'] { --tint: var(--samfunn); }
+[data-tint='forskning'] { --tint: var(--forskning); }
 
 .path--neutral {
   background: transparent;
@@ -390,14 +451,54 @@ button {
 }
 
 .button {
-  justify-self: start;
   padding: 12px 20px;
-  border: 0;
+  border: 2px solid var(--marker);
   border-radius: var(--radius);
-  background: var(--ink);
-  color: var(--bg);
+  background: var(--marker);
+  color: var(--marker-ink);
   font-weight: 700;
   cursor: pointer;
+}
+
+.button--quiet {
+  background: transparent;
+  color: var(--ink);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* What the check round changed on the route. */
+.detours {
+  display: grid;
+  gap: 8px;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  background: var(--green);
+  color: var(--on-color);
+}
+
+.detours .link-button {
+  color: var(--on-color);
+}
+
+.detours__title {
+  font-weight: 700;
+}
+
+.detours__list {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.detours__step {
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .muted {
@@ -453,8 +554,8 @@ button {
 
 .meter {
   display: block;
-  height: 6px;
-  border-radius: 3px;
+  height: 8px;
+  border-radius: 4px;
   background: var(--soft);
   overflow: hidden;
 }
@@ -462,7 +563,8 @@ button {
 .meter__fill {
   display: block;
   height: 100%;
-  background: var(--ink);
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--green), var(--marker));
   transition: width 0.3s ease;
 }
 
@@ -488,6 +590,10 @@ button {
 
 .result--top {
   border: 2px solid var(--marker);
+}
+
+.result .chip {
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
 }
 
 .result__head {

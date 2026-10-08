@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { CAREERS } from '../data/careers';
-import { QUESTIONS, QUESTION_BY_ID } from '../data/questions';
+import { CHECKS, COMPLAINTS, CHECK_BY_ID } from '../data/checks';
+import { FIELDS, QUESTIONS, QUESTION_BY_ID } from '../data/questions';
+import { applyChecks } from './check';
 import { activeAnswers, nextQuestion, rankCareers, routeQuestions, scoreCareer } from './route';
 
 describe('catalogue', () => {
@@ -21,27 +23,31 @@ describe('catalogue', () => {
     expect(new Set(QUESTIONS.map((q) => q.id)).size).toBe(QUESTIONS.length);
   });
 
-  it('gives every side path option at least two careers', () => {
-    for (const q of QUESTIONS.filter((x) => x.showIf)) {
-      for (const o of q.options) {
-        const count = CAREERS.filter((c) => c.fits.fokus?.includes(q.showIf!.option) && c.fits[q.id]?.includes(o.id)).length;
-        expect(count, `${q.id}=${o.id}`).toBeGreaterThanOrEqual(2);
+  it('gives every field direction at least two careers', () => {
+    for (const field of FIELDS) {
+      for (const d of field.directions) {
+        const count = CAREERS.filter((c) => c.fits.felt?.includes(field.id) && c.fits[field.id]?.includes(d.id)).length;
+        expect(count, `${field.id}=${d.id}`).toBeGreaterThanOrEqual(2);
       }
+    }
+  });
+
+  it('lists a direction for every field a career belongs to', () => {
+    for (const c of CAREERS) {
+      for (const f of c.fits.felt ?? []) expect(c.fits[f], `${c.id}: ${f}`).toBeDefined();
     }
   });
 });
 
 describe('route', () => {
-  it('opens a side path only after its fork', () => {
-    expect(routeQuestions({}).some((q) => q.id === 'ting')).toBe(false);
-    const ids = routeQuestions({ fokus: 'ting' }).map((q) => q.id);
-    expect(ids).toContain('ting');
-    expect(ids).not.toContain('mennesker');
+  it('starts with the field, then a direction inside it', () => {
+    expect(nextQuestion({})?.id).toBe('felt');
+    expect(nextQuestion({ felt: 'natur' })?.id).toBe('natur');
+    expect(nextQuestion({ felt: 'natur', natur: 'dyr' })?.id).toBe('arbeidsform');
   });
 
-  it('asks the side path right after the fork', () => {
-    const answers = { arbeidsform: 'team', storrelse: 'stor', sted: 'inne', fokus: 'tall' };
-    expect(nextQuestion(answers)?.id).toBe('tall');
+  it('skips the direction when the field is unknown', () => {
+    expect(nextQuestion({ felt: 'vetikke' })?.id).toBe('arbeidsform');
   });
 
   it('ends when every fork on the route is answered', () => {
@@ -50,35 +56,65 @@ describe('route', () => {
     expect(Object.keys(answers)).toHaveLength(routeQuestions(answers).length);
   });
 
-  it('forgets an abandoned side path', () => {
-    const active = activeAnswers({ fokus: 'ideer', ting: 'bygg', ideer: 'ord' });
-    expect(active).toEqual({ fokus: 'ideer', ideer: 'ord' });
+  it('forgets an abandoned direction', () => {
+    expect(activeAnswers({ felt: 'it', bygg: 'hus', it: 'data' })).toEqual({ felt: 'it', it: 'data' });
   });
 });
 
 describe('ranking', () => {
   it('puts a matching career on top', () => {
     const top = rankCareers({
-      arbeidsform: 'team', storrelse: 'stor', sted: 'inne', fokus: 'mennesker', mennesker: 'helse',
+      felt: 'helse', helse: 'pleie', arbeidsform: 'team', storrelse: 'stor', sted: 'inne',
       hverdag: 'variasjon', rolle: 'fag', utdanning: 'bachelor', drivkraft: 'hjelpe',
     })[0]!;
     expect(top.career.id).toBe('sykepleier');
     expect(top.score).toBe(1);
   });
 
-  it('follows the side path', () => {
-    const top = rankCareers({ fokus: 'ting', ting: 'bygg', utdanning: 'kort', sted: 'ute' }).slice(0, 3);
+  it('follows the direction', () => {
+    const top = rankCareers({ felt: 'bygg', bygg: 'hus', utdanning: 'kort', sted: 'ute' }).slice(0, 3);
     expect(top.map((m) => m.career.id)).toContain('tomrer');
   });
 
   it('ignores neutral answers', () => {
     const career = CAREERS[0]!;
     expect(scoreCareer(career, { arbeidsform: 'begge' }).score).toBe(0);
-    expect(scoreCareer(career, { arbeidsform: 'begge', fokus: 'mennesker' }).score).toBe(1);
+    expect(scoreCareer(career, { arbeidsform: 'begge', felt: 'helse' }).score).toBe(1);
   });
 
   it('counts a fork the career does not list as a miss', () => {
     const tomrer = CAREERS.find((c) => c.id === 'tomrer')!;
-    expect(scoreCareer(tomrer, { fokus: 'ideer', ideer: 'design' }).score).toBe(0);
+    expect(scoreCareer(tomrer, { felt: 'kreativ', kreativ: 'design' }).score).toBe(0);
+  });
+});
+
+describe('checks', () => {
+  it('map back to options on the route', () => {
+    for (const check of CHECKS) {
+      const q = QUESTION_BY_ID.get(check.target);
+      expect(q, check.id).toBeDefined();
+      for (const o of check.options) expect(q!.options.some((x) => x.id === o.value), `${check.id}: ${o.value}`).toBe(true);
+    }
+    for (const c of COMPLAINTS) for (const id of c.checks) expect(CHECK_BY_ID.has(id), id).toBe(true);
+  });
+
+  it('offer every field in the field check', () => {
+    const values = CHECK_BY_ID.get('felt-dag')!.options.map((o) => o.value);
+    expect(values.sort()).toEqual(FIELDS.map((f) => f.id).sort());
+  });
+
+  it('keep agreeing answers and report the detours', () => {
+    const { answers, detours } = applyChecks(
+      { felt: 'helse', helse: 'pleie', arbeidsform: 'team', sted: 'inne' },
+      { 'arbeidsform-prosjekt': 'team', 'sted-november': 'ute' },
+    );
+    expect(answers.arbeidsform).toBe('team');
+    expect(answers.sted).toBe('ute');
+    expect(detours).toEqual([{ question: 'sted', before: 'inne', after: 'ute' }]);
+  });
+
+  it('send the route back to a new direction when the field changes', () => {
+    const { answers } = applyChecks({ felt: 'helse', helse: 'pleie' }, { 'felt-dag': 'it' });
+    expect(nextQuestion(answers)?.id).toBe('it');
   });
 });
