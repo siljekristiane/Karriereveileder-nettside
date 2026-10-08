@@ -25,6 +25,8 @@ export function App() {
   const [started, setStarted] = useState(false);
   // The career whose "Veien videre" page is open.
   const [openId, setOpenId] = useState<string | undefined>(undefined);
+  // The answers from before the last "Start på nytt", so it can be undone.
+  const [cleared, setCleared] = useState<Answers | undefined>(undefined);
 
   useEffect(() => saveAnswers(answers), [answers]);
 
@@ -42,18 +44,28 @@ export function App() {
     if (!current) return;
     setAnswers((a) => ({ ...a, [current.id]: optionId }));
     setRevisit(undefined);
+    // A new choice makes the last check round's summary and the restart undo stale.
+    setOutcome(undefined);
+    setCleared(undefined);
   };
 
   const index = current ? route.findIndex((q) => q.id === current.id) : -1;
   const previous = index > 0 ? route[index - 1] : undefined;
 
   const restart = () => {
+    if (answeredCount > 0) setCleared(answers);
     setAnswers({});
     setRevisit(undefined);
     setOutcome(undefined);
     setOpenId(undefined);
     setChecking(false);
     setStarted(true);
+  };
+
+  const undoRestart = () => {
+    if (!cleared) return;
+    setAnswers(cleared);
+    setCleared(undefined);
   };
 
   const finishChecks = (checkAnswers: Record<string, string>) => {
@@ -84,6 +96,14 @@ export function App() {
   } else if (current) {
     stage = (
       <>
+        {cleared && answeredCount === 0 && (
+          <p className="notice" role="status">
+            Du har startet på nytt.
+            <button type="button" className="link-button" onClick={undoRestart}>
+              Angre
+            </button>
+          </p>
+        )}
         <Crossroad
           key={current.id}
           question={current}
@@ -164,7 +184,13 @@ export function App() {
           </span>
           Veikartet
         </button>
-        <p className="masthead__note">Gratis karriereveileder · ingen innlogging</p>
+        {started && answeredCount > 0 ? (
+          <button type="button" className="link-button" onClick={restart}>
+            Start på nytt
+          </button>
+        ) : (
+          <p className="masthead__note">Gratis karriereveileder · ingen innlogging</p>
+        )}
       </header>
 
       {!started ? (

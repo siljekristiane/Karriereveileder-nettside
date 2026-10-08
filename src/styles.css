@@ -163,6 +163,16 @@ button {
   font-weight: 800;
 }
 
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  background: var(--soft);
+}
+
 .masthead__note {
   color: var(--muted);
   font-size: var(--step--1);
@@ -265,8 +275,12 @@ button {
   box-shadow: 0 0 0 6px color-mix(in srgb, var(--strong) 22%, transparent);
 }
 
-.stop--done .stop__button:hover .stop__marker {
-  transform: scale(1.08);
+/* Hover only on devices that really hover: on touch screens it sticks after
+   a tap and makes the card under the finger on the next screen look chosen. */
+@media (hover: hover) {
+  .stop--done .stop__button:hover .stop__marker {
+    transform: scale(1.08);
+  }
 }
 
 .stop__text {
@@ -366,10 +380,17 @@ button {
     transform 0.15s ease;
 }
 
-.path:hover {
-  border-color: var(--strong);
-  background: var(--soft);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .path:hover {
+    border-color: var(--strong);
+    background: var(--soft);
+    transform: translateY(-2px);
+  }
+
+  .role:hover {
+    border-color: var(--strong);
+    background: var(--soft);
+  }
 }
 
 .path--chosen {
@@ -771,7 +792,6 @@ button {
   border-style: dashed;
 }
 
-.role:hover,
 .role--chosen {
   border-color: var(--strong);
   background: var(--soft);
