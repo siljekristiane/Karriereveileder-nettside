@@ -2,12 +2,15 @@
    topographic sheet; the current crossroad and the nearest destinations sit
    beside it. The T is the trail mark painted on stones along Norwegian paths.
    Colours: only white, Pantone 15-4030 TCX Chambray Blue and 19-2118 TCX
-   Winetasting (hex from the pantone-tcx table). Lines and muted text are mixes
-   of these three, never new hues. */
+   Winetasting (hex from the pantone-tcx table), plus --sky, one shade lighter
+   than Chambray, as the accent. Lines and muted text are mixes of these, never
+   new hues. */
 :root {
   --white: #ffffff;
   --chambray: #9eb4d3; /* 15-4030 TCX Chambray Blue */
   --wine: #492a34; /* 19-2118 TCX Winetasting */
+  /* One shade lighter than Chambray (70 % Chambray, 30 % white): the accent. */
+  --sky: #bbcae0;
 
   /* Chambray carries the page: a light blue ground, white cards, blue bands. */
   --bg: color-mix(in srgb, var(--chambray) 30%, var(--white));
@@ -17,7 +20,9 @@
   --accent: var(--chambray);
   --on-accent: var(--wine);
   --strong: var(--wine);
-  --on-strong: var(--white);
+  /* Text on Winetasting buttons is the light blue accent. */
+  --on-strong: var(--sky);
+  --eyebrow: var(--muted);
   --muted: color-mix(in srgb, var(--wine) 78%, var(--white));
   --line: color-mix(in srgb, var(--chambray) 85%, var(--white));
   --soft: color-mix(in srgb, var(--chambray) 50%, var(--white));
@@ -44,8 +49,10 @@
     --ink: #ffffff;
     --accent: #9eb4d3;
     --on-accent: #492a34;
-    --strong: #ffffff;
+    --strong: #bbcae0;
     --on-strong: #492a34;
+  --eyebrow: #bbcae0;
+    --eyebrow: #bbcae0;
     --muted: color-mix(in srgb, #ffffff 72%, #492a34);
     --line: color-mix(in srgb, #9eb4d3 55%, #492a34);
     --soft: color-mix(in srgb, #9eb4d3 32%, #492a34);
@@ -60,8 +67,9 @@
   --ink: #ffffff;
   --accent: #9eb4d3;
   --on-accent: #492a34;
-  --strong: #ffffff;
+  --strong: #bbcae0;
   --on-strong: #492a34;
+  --eyebrow: #bbcae0;
   --muted: color-mix(in srgb, #ffffff 72%, #492a34);
   --line: color-mix(in srgb, #9eb4d3 55%, #492a34);
   --soft: color-mix(in srgb, #9eb4d3 32%, #492a34);
@@ -168,7 +176,7 @@ button {
   height: 32px;
   border-radius: 7px;
   background: var(--wine);
-  color: var(--chambray);
+  color: var(--sky);
   box-shadow: 0 0 0 1px var(--line);
   font-weight: 800;
 }
@@ -274,8 +282,8 @@ button {
 
 .stop--done .stop__marker {
   border-color: var(--strong);
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--sky);
+  color: var(--wine);
 }
 
 .stop--current .stop__marker {
@@ -335,7 +343,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--eyebrow);
   font-variant-numeric: tabular-nums;
 }
 
@@ -349,8 +357,8 @@ button {
 }
 
 .tag--blue {
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--sky);
+  color: var(--wine);
 }
 
 .crossroad,
@@ -455,8 +463,8 @@ button {
 }
 
 .button--quiet {
-  background: transparent;
-  color: var(--ink);
+  background: var(--sky);
+  color: var(--wine);
 }
 
 .actions {
@@ -572,8 +580,8 @@ button {
 .chip {
   padding: 2px 10px;
   border-radius: 999px;
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--sky);
+  color: var(--wine);
   font-size: 0.8125rem;
 }
 
@@ -694,8 +702,8 @@ button {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--wine);
+  color: var(--sky);
 }
 
 .how__title {
