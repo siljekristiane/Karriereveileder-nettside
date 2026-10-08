@@ -11,6 +11,7 @@
   --wine: #492a34; /* 19-2118 TCX Winetasting */
   /* One shade lighter than Chambray (70 % Chambray, 30 % white): the accent. */
   --sky: #bbcae0;
+  --light-grey: #e8e9ec;
 
   /* Chambray carries the page: a light blue ground, white cards, blue bands. */
   --bg: color-mix(in srgb, var(--chambray) 30%, var(--white));
@@ -23,7 +24,18 @@
   /* Text on Winetasting buttons is the light blue accent. */
   --on-strong: var(--sky);
   --eyebrow: var(--muted);
-  --muted: color-mix(in srgb, var(--wine) 78%, var(--white));
+  /* Grey: a cool light grey surface; --muted is the matching dark grey. */
+  --grey: var(--light-grey);
+  /* Inverse blocks swap the ground: Winetasting with white text in light mode. */
+  --inv-bg: var(--wine);
+  --inv-ink: var(--white);
+  --inv-muted: var(--sky);
+  --inv-line: color-mix(in srgb, var(--sky) 45%, var(--wine));
+  --inv-soft: color-mix(in srgb, var(--chambray) 28%, var(--wine));
+  --inv-surface: color-mix(in srgb, var(--chambray) 18%, var(--wine));
+  --inv-strong: var(--sky);
+  --inv-on-strong: var(--wine);
+  --muted: #5c5e66;
   --line: color-mix(in srgb, var(--chambray) 85%, var(--white));
   --soft: color-mix(in srgb, var(--chambray) 50%, var(--white));
   --contour: color-mix(in srgb, var(--chambray) 45%, transparent);
@@ -51,9 +63,17 @@
     --on-accent: #492a34;
     --strong: #bbcae0;
     --on-strong: #492a34;
-  --eyebrow: #bbcae0;
     --eyebrow: #bbcae0;
-    --muted: color-mix(in srgb, #ffffff 72%, #492a34);
+    --muted: #c7c9cf;
+    --grey: #3a3b41;
+    --inv-bg: #ffffff;
+    --inv-ink: #492a34;
+    --inv-muted: #5c5e66;
+    --inv-line: #9eb4d3;
+    --inv-soft: color-mix(in srgb, #9eb4d3 30%, #ffffff);
+    --inv-surface: #ffffff;
+    --inv-strong: #492a34;
+    --inv-on-strong: #bbcae0;
     --line: color-mix(in srgb, #9eb4d3 55%, #492a34);
     --soft: color-mix(in srgb, #9eb4d3 32%, #492a34);
     --contour: color-mix(in srgb, #9eb4d3 12%, transparent);
@@ -70,7 +90,16 @@
   --strong: #bbcae0;
   --on-strong: #492a34;
   --eyebrow: #bbcae0;
-  --muted: color-mix(in srgb, #ffffff 72%, #492a34);
+  --muted: #c7c9cf;
+  --grey: #3a3b41;
+  --inv-bg: #ffffff;
+  --inv-ink: #492a34;
+  --inv-muted: #5c5e66;
+  --inv-line: #9eb4d3;
+  --inv-soft: color-mix(in srgb, #9eb4d3 30%, #ffffff);
+  --inv-surface: #ffffff;
+  --inv-strong: #492a34;
+  --inv-on-strong: #bbcae0;
   --line: color-mix(in srgb, #9eb4d3 55%, #492a34);
   --soft: color-mix(in srgb, #9eb4d3 32%, #492a34);
   --contour: color-mix(in srgb, #9eb4d3 12%, transparent);
@@ -588,8 +617,8 @@ button {
 .footer {
   padding: 16px 18px;
   border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--grey);
+  color: var(--ink);
   font-size: var(--step--1);
 }
 
@@ -955,4 +984,83 @@ button {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   font-size: var(--step--1);
+}
+
+/* Mixing the palette: neighbouring blocks take turns between white, grey and
+   the two blues, and a few blocks swap to the inverse ground (Winetasting in
+   light mode, white in dark mode). :where() keeps the turns low in specificity,
+   so chosen and hover states below still win. */
+.paths > :where(.path:nth-child(3n + 2)):not(.path--neutral),
+.results > :where(.result:nth-child(3n + 2)),
+.guide > :where(.guide__section:nth-of-type(3n + 2)),
+.how__steps > :where(.how__step:nth-child(3n + 2)),
+.contacts > :where(.contact:nth-child(3n + 2)) {
+  background: var(--grey);
+}
+
+.paths > :where(.path:nth-child(3n + 3)):not(.path--neutral),
+.results > :where(.result:nth-child(3n + 3)),
+.guide > :where(.guide__section:nth-of-type(3n + 3)),
+.how__steps > :where(.how__step:nth-child(3n + 3)),
+.contacts > :where(.contact:nth-child(3n + 3)) {
+  background: var(--soft);
+}
+
+.paths > .path.path--chosen {
+  background: var(--sky);
+  color: var(--wine);
+}
+
+.get__list > :nth-child(4n + 1) {
+  background: var(--chambray);
+}
+
+.get__list > :nth-child(4n + 2) {
+  background: var(--sky);
+}
+
+.get__list > :nth-child(4n + 3) {
+  background: var(--white);
+  box-shadow: inset 0 0 0 2px var(--chambray);
+}
+
+.get__list > :nth-child(4n + 4) {
+  background: var(--light-grey);
+}
+
+.get__item {
+  color: var(--wine);
+}
+
+/* Inverse blocks: the top result, the landing's "Dette får du" band and the
+   LinkedIn post in "Veien videre". */
+.results > .result.result--top,
+.get,
+.guide > .guide__section--feature {
+  --ink: var(--inv-ink);
+  --muted: var(--inv-muted);
+  --eyebrow: var(--inv-muted);
+  --line: var(--inv-line);
+  --soft: var(--inv-soft);
+  --surface: var(--inv-surface);
+  --strong: var(--inv-strong);
+  --on-strong: var(--inv-on-strong);
+  background: var(--inv-bg);
+  color: var(--ink);
+}
+
+.results > .result.result--top {
+  border-color: var(--inv-bg);
+}
+
+.get {
+  padding: 40px 24px;
+  border-radius: var(--radius);
+}
+
+.result__score,
+.role__text,
+.contact__why,
+.path__hint {
+  color: var(--muted);
 }

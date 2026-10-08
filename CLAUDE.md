@@ -40,7 +40,10 @@ npm run check   # lint + typecheck + test + build (skal være grønt før push)
 - Farger: KUN hvit, Pantone 15-4030 TCX Chambray Blue (#9eb4d3) og 19-2118 TCX
   Winetasting (#492a34), pluss aksentfargen `--sky` (#bbcae0), én nyanse lysere
   enn Chambray: tekst på knapper, ikoner, merkelapper og overskrifter i mørk modus.
-  Linjer og dempet tekst er blandinger av disse, aldri nye farger. Tokens i `:root` i `src/styles.css`; mørk variant bytter om de samme tre.
+  Grått: lys grå flate (`--light-grey` #e8e9ec) og mørk grå tekst (`--muted`).
+  Naboblokker veksler mellom hvit, grå og de to blåfargene, og noen blokker er
+  «inverse» (Winetasting i lys modus, hvit i mørk): beste treff, «Dette får du»
+  og LinkedIn-innlegget. Linjer er blandinger av disse, aldri andre farger. Tokens i `:root` i `src/styles.css`; mørk variant bytter om de samme tre.
 - Yrkesdata er forenklet; legg til yrker ved å legge til en oppføring i `careers.ts`
   (testen sjekker at alle spørsmål/valg finnes).
 - Kommentarer i koden på engelsk, tekst i UI på norsk.

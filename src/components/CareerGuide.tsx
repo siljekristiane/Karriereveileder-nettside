@@ -220,7 +220,7 @@ export function CareerGuide({ match, answers, onBack }: Props) {
         </section>
       )}
 
-      <section className="guide__section" aria-labelledby="post-title">
+      <section className="guide__section guide__section--feature" aria-labelledby="post-title">
         <h2 id="post-title" className="guide__title">
           Forslag til LinkedIn-innlegg
         </h2>
