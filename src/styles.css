@@ -9,7 +9,8 @@
   --chambray: #9eb4d3; /* 15-4030 TCX Chambray Blue */
   --wine: #492a34; /* 19-2118 TCX Winetasting */
 
-  --bg: var(--white);
+  /* Chambray carries the page: a light blue ground, white cards, blue bands. */
+  --bg: color-mix(in srgb, var(--chambray) 30%, var(--white));
   --surface: var(--white);
   --ink: var(--wine);
   /* Fills that carry text: chambray with wine text, wine with white text. */
@@ -18,9 +19,9 @@
   --strong: var(--wine);
   --on-strong: var(--white);
   --muted: color-mix(in srgb, var(--wine) 78%, var(--white));
-  --line: color-mix(in srgb, var(--chambray) 70%, var(--white));
-  --soft: color-mix(in srgb, var(--chambray) 28%, var(--white));
-  --contour: color-mix(in srgb, var(--chambray) 14%, transparent);
+  --line: color-mix(in srgb, var(--chambray) 85%, var(--white));
+  --soft: color-mix(in srgb, var(--chambray) 50%, var(--white));
+  --contour: color-mix(in srgb, var(--chambray) 45%, transparent);
 
   --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
@@ -39,32 +40,32 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --bg: #492a34;
-    --surface: #492a34;
+    --surface: color-mix(in srgb, #9eb4d3 16%, #492a34);
     --ink: #ffffff;
     --accent: #9eb4d3;
     --on-accent: #492a34;
     --strong: #ffffff;
     --on-strong: #492a34;
     --muted: color-mix(in srgb, #ffffff 72%, #492a34);
-    --line: color-mix(in srgb, #9eb4d3 40%, #492a34);
-    --soft: color-mix(in srgb, #9eb4d3 22%, #492a34);
-    --contour: color-mix(in srgb, #9eb4d3 7%, transparent);
+    --line: color-mix(in srgb, #9eb4d3 55%, #492a34);
+    --soft: color-mix(in srgb, #9eb4d3 32%, #492a34);
+    --contour: color-mix(in srgb, #9eb4d3 12%, transparent);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
   --bg: #492a34;
-  --surface: #492a34;
+  --surface: color-mix(in srgb, #9eb4d3 16%, #492a34);
   --ink: #ffffff;
   --accent: #9eb4d3;
   --on-accent: #492a34;
   --strong: #ffffff;
   --on-strong: #492a34;
   --muted: color-mix(in srgb, #ffffff 72%, #492a34);
-  --line: color-mix(in srgb, #9eb4d3 40%, #492a34);
-  --soft: color-mix(in srgb, #9eb4d3 22%, #492a34);
-  --contour: color-mix(in srgb, #9eb4d3 7%, transparent);
+  --line: color-mix(in srgb, #9eb4d3 55%, #492a34);
+  --soft: color-mix(in srgb, #9eb4d3 32%, #492a34);
+  --contour: color-mix(in srgb, #9eb4d3 12%, transparent);
   color-scheme: dark;
 }
 
@@ -134,6 +135,15 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 8px 20px;
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.masthead .masthead__note,
+.masthead .link-button {
+  color: var(--on-accent);
 }
 
 .brand {
@@ -255,7 +265,7 @@ button {
   height: 36px;
   border-radius: 50%;
   border: 2px solid var(--line);
-  background: var(--bg);
+  background: var(--surface);
   color: var(--line);
   font-family: var(--font-display);
   font-weight: 800;
@@ -512,6 +522,7 @@ button {
 
 .result--top {
   border: 2px solid var(--strong);
+  background: var(--soft);
 }
 
 
@@ -561,14 +572,16 @@ button {
 .chip {
   padding: 2px 10px;
   border-radius: 999px;
-  background: var(--soft);
+  background: var(--accent);
+  color: var(--on-accent);
   font-size: 0.8125rem;
 }
 
 .footer {
-  border-top: 1px solid var(--line);
-  padding-top: 16px;
-  color: var(--muted);
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
   font-size: var(--step--1);
 }
 
@@ -670,6 +683,9 @@ button {
   gap: 12px;
   justify-items: center;
   align-content: start;
+  padding: 28px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
 }
 
 .how__icon {
@@ -710,7 +726,8 @@ button {
 .get__item {
   padding: 10px 18px;
   border-radius: 999px;
-  background: var(--soft);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 /* Results: the way on to a career */
@@ -753,8 +770,9 @@ button {
 .guide__section {
   display: grid;
   gap: 14px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
+  padding: 24px;
+  border-radius: var(--radius);
+  background: var(--surface);
   min-width: 0;
 }
 
