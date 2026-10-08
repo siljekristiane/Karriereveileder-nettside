@@ -7,30 +7,12 @@ type Props = {
 };
 
 const STEPS = [
-  {
-    icon: Compass,
-    title: 'Velg fagfelt og retning',
-    text: 'Start bredt med fagfeltet som frister mest, og velg så en konkret retning i det.',
-  },
-  {
-    icon: Signpost,
-    title: 'Gå veien',
-    text: 'Ett veiskille om gangen: team eller alene, stor eller liten arbeidsplass, inne eller ute, og noen til.',
-  },
-  {
-    icon: Route,
-    title: 'Få veien videre',
-    text: 'Se yrkene som passer, konkrete roller i dem, og hvordan du kommer deg dit.',
-  },
+  { icon: Compass, title: 'Velg fagfelt', text: 'Start bredt, og velg en retning.' },
+  { icon: Signpost, title: 'Gå veien', text: 'Ett enkelt valg om gangen.' },
+  { icon: Route, title: 'Få veien videre', text: 'Yrker, roller og neste steg.' },
 ];
 
-const YOU_GET = [
-  'Yrker som passer valgene dine, og hvorfor',
-  'Konkrete roller, og ideer til å lage din egen',
-  'Råd om internship, deltidsjobb, sommerjobb og studier',
-  'Hvem det er lurt å snakke med, og en melding du kan sende',
-  'Bedrifter å følge, og et forslag til LinkedIn-innlegg',
-];
+const YOU_GET = ['Yrker og roller', 'Råd om jobb og studier', 'Folk å snakke med', 'Forslag til LinkedIn-innlegg'];
 
 export function Landing({ hasProgress, onStart, onRestart }: Props) {
   return (
@@ -40,10 +22,7 @@ export function Landing({ hasProgress, onStart, onRestart }: Props) {
         <h1 id="hero-title" className="hero__title">
           Finn veien til en jobb som passer deg
         </h1>
-        <p className="hero__lead">
-          Veikartet er en gratis karriereveileder for deg som lurer på hva du skal bli, eller vil bytte retning. Du
-          svarer på noen enkle valg, og får forslag til yrker og roller, og en konkret plan for hvordan du kommer dit.
-        </p>
+        <p className="hero__lead">Svar på noen enkle valg, og få forslag til yrker og en plan for veien dit.</p>
         <div className="actions">
           <button type="button" className="button button--big" onClick={onStart}>
             {hasProgress ? 'Fortsett der du slapp' : 'Trykk her for å starte'}{' '}
@@ -55,7 +34,7 @@ export function Landing({ hasProgress, onStart, onRestart }: Props) {
             </button>
           )}
         </div>
-        <p className="muted">Tar rundt tre minutter · ingen innlogging · svarene blir bare i nettleseren din</p>
+        <p className="muted">Ca. tre minutter · gratis · ingen innlogging</p>
       </section>
 
       <section className="how" aria-labelledby="how-title">
@@ -79,9 +58,11 @@ export function Landing({ hasProgress, onStart, onRestart }: Props) {
         <h2 id="get-title" className="guide__title">
           Dette får du til slutt
         </h2>
-        <ul className="tips">
+        <ul className="get__list">
           {YOU_GET.map((t) => (
-            <li key={t}>{t}</li>
+            <li key={t} className="get__item">
+              {t}
+            </li>
           ))}
         </ul>
       </section>
