@@ -38,7 +38,13 @@ export function App() {
 
   // Each new view starts at the top of the page.
   const view = !started ? 'landing' : checking ? 'check' : current ? current.id : opened ? opened.career.id : 'results';
-  useEffect(() => window.scrollTo(0, 0), [view]);
+  useEffect(() => {
+    try {
+      window.scrollTo(0, 0);
+    } catch {
+      // Some embedded views refuse scrolling; the page still works.
+    }
+  }, [view]);
 
   const choose = (optionId: string) => {
     if (!current) return;

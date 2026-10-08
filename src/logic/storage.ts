@@ -29,3 +29,11 @@ export function saveAnswers(answers: Answers): void {
     // Storage blocked (private mode): the route just isn't remembered.
   }
 }
+
+export function clearAnswers(): void {
+  try {
+    localStorage.removeItem(KEY);
+  } catch {
+    // Nothing stored to clear.
+  }
+}

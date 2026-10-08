@@ -913,3 +913,20 @@ button {
   border: 1px solid var(--line);
   border-radius: 999px;
 }
+
+.crash {
+  display: grid;
+  gap: 16px;
+  max-width: 640px;
+  margin: 48px auto;
+}
+
+.crash__detail {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  background: var(--soft);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--step--1);
+}
