@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { CHECK_BY_ID, COMPLAINTS, type Complaint } from '../data/checks';
-import { fieldTint } from './Crossroad';
 
 type Props = {
   onDone: (checkAnswers: Record<string, string>) => void;
@@ -58,7 +57,7 @@ export function CheckRound({ onDone, onReopenDirection, onCancel }: Props) {
     <section className="crossroad" aria-labelledby="check-title">
       <p className="eyebrow">
         Kontrollspørsmål {step + 1} av {complaint.checks.length}
-        <span className="tag tag--green">{complaint.label}</span>
+        <span className="tag tag--blue">{complaint.label}</span>
       </p>
       <h1 id="check-title" className="crossroad__title">{check.text}</h1>
       <div className="paths">
@@ -67,7 +66,6 @@ export function CheckRound({ onDone, onReopenDirection, onCancel }: Props) {
             key={o.value}
             type="button"
             className={`path${checkAnswers[check.id] === o.value ? ' path--chosen' : ''}`}
-            data-tint={fieldTint(check.target, o.value)}
             onClick={() => answer(o.value)}
           >
             <span className="path__label">{o.label}</span>

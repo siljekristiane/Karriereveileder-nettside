@@ -1,32 +1,26 @@
 /* Layout: a hiking map. The walked route runs down the left like a trail on a
    topographic sheet; the current crossroad and the nearest destinations sit
    beside it. The T is the trail mark painted on stones along Norwegian paths.
-   Colours: Pantone 13-0442 TCX (Green Glow) and 1810 burgundy, approximated in
-   sRGB, plus one light tint per field so each part of the map has its own colour. */
+   Colours: only white, Pantone 15-4030 TCX Chambray Blue and 19-2118 TCX
+   Winetasting (hex from the pantone-tcx table). Lines and muted text are mixes
+   of these three, never new hues. */
 :root {
-  --green: #b0c965; /* 13-0442 TCX Green Glow */
-  --burgundy: #7c2a2e; /* PMS 1810 burgundy */
-  --on-color: #2a1719;
+  --white: #ffffff;
+  --chambray: #9eb4d3; /* 15-4030 TCX Chambray Blue */
+  --wine: #492a34; /* 19-2118 TCX Winetasting */
 
-  --bg: #fbfbf4;
-  --surface: #ffffff;
-  --ink: #2a1719;
-  --muted: #6b5557;
-  --line: #e0dccb;
-  --soft: #eef3d8;
-  --marker: #7c2a2e;
-  --marker-ink: #ffffff;
-  --contour: rgb(124 42 46 / 0.05);
-  --helse: #f7dfe2;
-  --oppvekst: #f8eebc;
-  --bygg: #f8dcc8;
-  --natur: #e3eec2;
-  --kreativ: #e7def4;
-  --service: #d8eaf1;
-  --okonomi: #d4eedf;
-  --it: #dde3f6;
-  --samfunn: #ece6dc;
-  --forskning: #d6efe9;
+  --bg: var(--white);
+  --surface: var(--white);
+  --ink: var(--wine);
+  /* Fills that carry text: chambray with wine text, wine with white text. */
+  --accent: var(--chambray);
+  --on-accent: var(--wine);
+  --strong: var(--wine);
+  --on-strong: var(--white);
+  --muted: color-mix(in srgb, var(--wine) 78%, var(--white));
+  --line: color-mix(in srgb, var(--chambray) 70%, var(--white));
+  --soft: color-mix(in srgb, var(--chambray) 28%, var(--white));
+  --contour: color-mix(in srgb, var(--chambray) 14%, transparent);
 
   --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
   --font-body: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
@@ -41,51 +35,36 @@
   color-scheme: light;
 }
 
+/* Dark: the same three colours turned around, Winetasting as the ground. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #1c1213;
-    --surface: #271a1c;
-    --ink: #f4ece9;
-    --muted: #c4b0ae;
-    --line: #47343a;
-    --soft: #2f3520;
-    --marker: #e0959a;
-    --marker-ink: #1c1213;
-    --contour: rgb(244 236 233 / 0.04);
-    --helse: #3a2328;
-    --oppvekst: #38331d;
-    --bygg: #3b2a1f;
-    --natur: #2d3519;
-    --kreativ: #2f2840;
-    --service: #1d2f36;
-    --okonomi: #1d3327;
-    --it: #232a3d;
-    --samfunn: #33302a;
-    --forskning: #1b3330;
+    --bg: #492a34;
+    --surface: #492a34;
+    --ink: #ffffff;
+    --accent: #9eb4d3;
+    --on-accent: #492a34;
+    --strong: #ffffff;
+    --on-strong: #492a34;
+    --muted: color-mix(in srgb, #ffffff 72%, #492a34);
+    --line: color-mix(in srgb, #9eb4d3 40%, #492a34);
+    --soft: color-mix(in srgb, #9eb4d3 22%, #492a34);
+    --contour: color-mix(in srgb, #9eb4d3 7%, transparent);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #1c1213;
-  --surface: #271a1c;
-  --ink: #f4ece9;
-  --muted: #c4b0ae;
-  --line: #47343a;
-  --soft: #2f3520;
-  --marker: #e0959a;
-  --marker-ink: #1c1213;
-  --contour: rgb(244 236 233 / 0.04);
-  --helse: #3a2328;
-  --oppvekst: #38331d;
-  --bygg: #3b2a1f;
-  --natur: #2d3519;
-  --kreativ: #2f2840;
-  --service: #1d2f36;
-  --okonomi: #1d3327;
-  --it: #232a3d;
-  --samfunn: #33302a;
-  --forskning: #1b3330;
+  --bg: #492a34;
+  --surface: #492a34;
+  --ink: #ffffff;
+  --accent: #9eb4d3;
+  --on-accent: #492a34;
+  --strong: #ffffff;
+  --on-strong: #492a34;
+  --muted: color-mix(in srgb, #ffffff 72%, #492a34);
+  --line: color-mix(in srgb, #9eb4d3 40%, #492a34);
+  --soft: color-mix(in srgb, #9eb4d3 22%, #492a34);
+  --contour: color-mix(in srgb, #9eb4d3 7%, transparent);
   color-scheme: dark;
 }
 
@@ -135,7 +114,7 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid var(--marker);
+  outline: 3px solid var(--strong);
   outline-offset: 3px;
 }
 
@@ -174,8 +153,9 @@ button {
   width: 32px;
   height: 32px;
   border-radius: 7px;
-  background: var(--burgundy);
-  color: var(--green);
+  background: var(--wine);
+  color: var(--chambray);
+  box-shadow: 0 0 0 1px var(--line);
   font-weight: 800;
 }
 
@@ -222,7 +202,7 @@ button {
 
 .map__walked {
   fill: none;
-  stroke: var(--marker);
+  stroke: var(--strong);
   stroke-width: 3;
   stroke-linecap: round;
 }
@@ -269,16 +249,16 @@ button {
 }
 
 .stop--done .stop__marker {
-  border-color: var(--marker);
-  background: var(--green);
-  color: var(--burgundy);
+  border-color: var(--strong);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .stop--current .stop__marker {
-  border-color: var(--marker);
-  background: var(--marker);
-  color: var(--marker-ink);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--marker) 22%, transparent);
+  border-color: var(--strong);
+  background: var(--strong);
+  color: var(--on-strong);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--strong) 22%, transparent);
 }
 
 .stop--done .stop__button:hover .stop__marker {
@@ -322,8 +302,8 @@ button {
   grid-column: 1 / -1;
   padding: 18px 22px;
   border-radius: var(--radius);
-  background: var(--green);
-  color: var(--on-color);
+  background: var(--accent);
+  color: var(--on-accent);
   font-size: var(--step-1);
   line-height: 1.5;
 }
@@ -345,14 +325,14 @@ button {
   white-space: nowrap;
   padding: 1px 8px;
   border-radius: 999px;
-  background: var(--marker);
-  color: var(--marker-ink);
+  background: var(--strong);
+  color: var(--on-strong);
   letter-spacing: 0.04em;
 }
 
-.tag--green {
-  background: var(--green);
-  color: var(--on-color);
+.tag--blue {
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .crossroad,
@@ -393,35 +373,17 @@ button {
 }
 
 .path:hover {
-  border-color: var(--marker);
+  border-color: var(--strong);
+  background: var(--soft);
   transform: translateY(-2px);
 }
 
 .path--chosen {
-  border-color: var(--marker);
-  box-shadow: inset 0 0 0 1px var(--marker);
+  background: var(--soft);
+  border-color: var(--strong);
+  box-shadow: inset 0 0 0 1px var(--strong);
 }
 
-/* Each field keeps its own light colour, on the cards and in the results. */
-.path[data-tint],
-.result[data-tint] {
-  background: var(--tint);
-}
-
-.path[data-tint]:not(.path--chosen):not(:hover) {
-  border-color: color-mix(in srgb, var(--tint), var(--ink) 14%);
-}
-
-[data-tint='helse'] { --tint: var(--helse); }
-[data-tint='oppvekst'] { --tint: var(--oppvekst); }
-[data-tint='bygg'] { --tint: var(--bygg); }
-[data-tint='natur'] { --tint: var(--natur); }
-[data-tint='kreativ'] { --tint: var(--kreativ); }
-[data-tint='service'] { --tint: var(--service); }
-[data-tint='okonomi'] { --tint: var(--okonomi); }
-[data-tint='it'] { --tint: var(--it); }
-[data-tint='samfunn'] { --tint: var(--samfunn); }
-[data-tint='forskning'] { --tint: var(--forskning); }
 
 .path--neutral {
   background: transparent;
@@ -452,10 +414,10 @@ button {
 
 .button {
   padding: 12px 20px;
-  border: 2px solid var(--marker);
+  border: 2px solid var(--strong);
   border-radius: var(--radius);
-  background: var(--marker);
-  color: var(--marker-ink);
+  background: var(--strong);
+  color: var(--on-strong);
   font-weight: 700;
   cursor: pointer;
 }
@@ -477,12 +439,12 @@ button {
   gap: 8px;
   padding: 16px 20px;
   border-radius: var(--radius);
-  background: var(--green);
-  color: var(--on-color);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .detours .link-button {
-  color: var(--on-color);
+  color: var(--on-accent);
 }
 
 .detours__title {
@@ -564,7 +526,7 @@ button {
   display: block;
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(90deg, var(--green), var(--marker));
+  background: linear-gradient(90deg, var(--accent), var(--strong));
   transition: width 0.3s ease;
 }
 
@@ -589,12 +551,9 @@ button {
 }
 
 .result--top {
-  border: 2px solid var(--marker);
+  border: 2px solid var(--strong);
 }
 
-.result .chip {
-  background: color-mix(in srgb, var(--surface) 65%, transparent);
-}
 
 .result__head {
   display: flex;
@@ -611,7 +570,7 @@ button {
 .result__score {
   font-family: var(--font-display);
   font-weight: 800;
-  color: var(--marker);
+  color: var(--strong);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

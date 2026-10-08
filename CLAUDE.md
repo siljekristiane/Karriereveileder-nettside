@@ -30,8 +30,9 @@ npm run check   # lint + typecheck + test + build (skal være grønt før push)
 
 - Statisk side uten server og uten sporing; ingen persondata forlater nettleseren.
 - Fonter er selvhostet via `@fontsource` (ikke Google Fonts, av personvernhensyn).
-- Farger er tokens i `:root` i `src/styles.css`, med lys og mørk variant:
-  13-0442 TCX (Green Glow) og 1810 burgunder, pluss én lys farge per fagfelt (`data-tint`).
+- Farger: KUN hvit, Pantone 15-4030 TCX Chambray Blue (#9eb4d3) og 19-2118 TCX
+  Winetasting (#492a34). Linjer og dempet tekst er blandinger av disse, aldri nye
+  farger. Tokens i `:root` i `src/styles.css`; mørk variant bytter om de samme tre.
 - Yrkesdata er forenklet; legg til yrker ved å legge til en oppføring i `careers.ts`
   (testen sjekker at alle spørsmål/valg finnes).
 - Kommentarer i koden på engelsk, tekst i UI på norsk.
