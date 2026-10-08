@@ -8,7 +8,6 @@ import { applyChecks, type Detour } from './logic/check';
 import { activeAnswers, nextQuestion, optionLabel, rankCareers, routeQuestions, type Answers } from './logic/route';
 import { loadAnswers, saveAnswers } from './logic/storage';
 
-const PREVIEW_COUNT = 5;
 const RESULT_COUNT = 8;
 
 /** The last check round: what it changed, and the route before it, for undo. */
@@ -72,7 +71,7 @@ export function App() {
         {answeredCount === 0 && (
           <p className="intro">
             Hvilken jobb passer deg? Start med fagfeltet som frister mest, velg en konkret retning, og gå så resten av
-            veien ett veiskille om gangen. Underveis ser du hvilke yrker du nærmer deg.
+            veien ett veiskille om gangen. Til slutt ser du hvilke yrker som passer veien din.
           </p>
         )}
         <Crossroad
@@ -84,7 +83,6 @@ export function App() {
           onChoose={choose}
           onBack={previous ? () => setRevisit(previous.id) : undefined}
         />
-        <Destinations variant="preview" matches={answeredCount === 0 ? [] : ranked.slice(0, PREVIEW_COUNT)} />
       </>
     );
   } else {
@@ -120,7 +118,7 @@ export function App() {
         <p className="muted">
           Prosenten viser hvor mange av valgene dine yrket passer med. Trykk på et punkt på kartet for å prøve en annen vei.
         </p>
-        <Destinations variant="result" matches={ranked.slice(0, RESULT_COUNT)} />
+        <Destinations matches={ranked.slice(0, RESULT_COUNT)} />
         <div className="actions">
           <button type="button" className="button" onClick={() => setChecking(true)}>
             Forslagene passer ikke

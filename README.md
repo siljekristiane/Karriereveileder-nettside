@@ -2,8 +2,8 @@
 
 En gratis karriereveileder på nett. Du velger først et fagfelt og en konkret
 retning i det, og går så resten av veikartet ett veiskille om gangen (team
-eller alene? stor eller liten bedrift? inne eller ute? …). Underveis ser du
-hvilke yrker du nærmer deg, og du kan når som helst trykke på et punkt på
+eller alene? stor eller liten bedrift? inne eller ute? …). Til slutt ser du
+hvilke yrker som passer, og du kan når som helst trykke på et punkt på
 kartet og velge en annen vei. Passer ikke forslagene, finner «Finn avviket»
 ut hvor veien tok av, med nye kontrollspørsmål, uten at du mister valgene dine.
 

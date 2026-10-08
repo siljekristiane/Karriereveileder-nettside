@@ -2,40 +2,13 @@ import type { Match } from '../logic/route';
 
 type Props = {
   matches: Match[];
-  /** Compact list beside the questions, or the full result at the end of the route. */
-  variant: 'preview' | 'result';
 };
 
 function percent(score: number): string {
   return `${Math.round(score * 100)} %`;
 }
 
-export function Destinations({ matches, variant }: Props) {
-  if (variant === 'preview') {
-    return (
-      <aside className="preview" aria-label="Nærmeste reisemål så langt">
-        <h2 className="preview__title">Nærmeste reisemål</h2>
-        {matches.length === 0 ? (
-          <p className="muted">Velg din første vei, så dukker yrkene opp her.</p>
-        ) : (
-          <ol className="preview__list">
-            {matches.map((m) => (
-              <li key={m.career.id} className="preview__item">
-                <span className="preview__row">
-                  <span className="preview__name">{m.career.name}</span>
-                  <span className="preview__score">{percent(m.score)}</span>
-                </span>
-                <span className="meter" aria-hidden="true">
-                  <span className="meter__fill" style={{ width: `${m.score * 100}%` }} />
-                </span>
-              </li>
-            ))}
-          </ol>
-        )}
-      </aside>
-    );
-  }
-
+export function Destinations({ matches }: Props) {
   return (
     <ol className="results">
       {matches.map((m, i) => (

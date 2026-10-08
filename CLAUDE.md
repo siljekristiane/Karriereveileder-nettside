@@ -1,7 +1,8 @@
 # CLAUDE.md — Veikartet (karriereveileder)
 
 Gratis karriereveileder på nett, på norsk (bokmål). Brukeren går et «veikart»:
-ett veiskille (spørsmål) om gangen, og ser underveis hvilke yrker som passer.
+ett veiskille (spørsmål) om gangen, og ser til slutt hvilke yrker som passer.
+Ingen forhåndsvisning av yrker underveis: den påvirker svarene (brukerens ønske).
 
 ## Kommandoer
 
@@ -24,7 +25,7 @@ npm run check   # lint + typecheck + test + build (skal være grønt før push)
 - `src/logic/route.ts` (ren, testet): ruten, neste veiskille, rangering.
 - `src/logic/storage.ts`: svarene lagres i `localStorage` (try/catch).
 - `src/components/`: `RouteMap` (kartet), `Crossroad` (spørsmålet), `Destinations`
-  (nærmeste yrker og resultat).
+  (yrkene i resultatet).
 
 ## Regler
 
